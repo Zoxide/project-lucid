@@ -15,20 +15,13 @@ module.exports = {
         })
         const q = queue.songs
 
-
-
         let queueEmbed = new discord.MessageEmbed()
             .setTitle('Current Queue')
             .setDescription(q.map((song, i) => `${i === 0 ? 'Currently Playing:\n' : `${i}. Up Next:`} ${song.name} - \`${song.formattedDuration}\``).join('\n'))
             .setColor(client.config.embedColor)
 
-
-
         message.channel.send({
             embeds: [queueEmbed]
         })
-
-
-
     }
 }

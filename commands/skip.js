@@ -26,9 +26,5 @@ module.exports = {
         } catch (e) {
             message.channel.send({embeds: [noSongEmbed]})
         }
-
-
-
-
     }
 }

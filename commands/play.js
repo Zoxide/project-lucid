@@ -21,7 +21,5 @@ module.exports = {
             textChannel: message.channel,
             message
         })
-
-
     }
 }

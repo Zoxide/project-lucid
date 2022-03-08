@@ -28,10 +28,8 @@ if(!config.prefix) {
 if(!config.embedColor) config.embedColor = '#0000FF'
 
 
-
 client.commands = new Discord.Collection()
 client.events = new Discord.Collection()
-
 client.config = require('./config.json')
 client.distube = new DisTube(client, {
     leaveOnStop: false,
@@ -47,10 +45,6 @@ client.distube = new DisTube(client, {
     ],
     youtubeDL: false
 })
-
-
-
-
 
 const commandFolders = fs.readdirSync("./commands");
 for (const folder of commandFolders) {
@@ -96,10 +90,6 @@ client.on('messageCreate', async message => {
 client.on('ready', () => {
     console.log('Bot is online!')
 })
-
-
-
-
 
 const status = queue =>
     `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.join(', ') || 'Off'}\` | Loop: \`${
@@ -157,8 +147,5 @@ client.distube
             embed: [finishedEmbed]
         })
     })
-
-
-
 
 client.login(config.botToken)

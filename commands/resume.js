@@ -24,9 +24,5 @@ module.exports = {
         message.channel.send({
             embeds: [pauseEmbed]
         })
-
-
-
-
     }
 }
