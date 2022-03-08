@@ -21,13 +21,6 @@ module.exports = {
             message.channel.send({
                 embeds: [helpEmbed]
             })
-
-
-
         }
-
-
-
-
     }
 }
