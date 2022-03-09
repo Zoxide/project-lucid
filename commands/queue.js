@@ -5,6 +5,8 @@ module.exports = {
     run: async (client, message, args) => {
         const discord = require('discord.js')
         const queue = client.distube.getQueue(message)
+
+        
         let noQueueEmbed = new discord.MessageEmbed()
             .setTitle(':x: Whoa')
             .setDescription('There is nothing playing')
