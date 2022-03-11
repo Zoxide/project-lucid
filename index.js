@@ -32,7 +32,7 @@ client.commands = new Discord.Collection()
 client.events = new Discord.Collection()
 client.config = require('./config.json')
 client.distube = new DisTube(client, {
-    leaveOnStop: false,
+    leaveOnStop: config.leaveOnStop,
     emitNewSongOnly: true,
     emitAddSongWhenCreatingQueue: false,
     emitAddListWhenCreatingQueue: false,
@@ -76,7 +76,7 @@ client.on('messageCreate', async message => {
     const command = args.shift().toLowerCase()
     const cmd = client.commands.get(command)
     if (!cmd) return
-    if (cmd.inVoiceChannel && !message.member.voice.channel) {
+    if (cmd.inVoiceChannel && !message.member.voice.channel && client.member.voice.channel !== message.member.voice.channel) {
         return message.channel.send(`:x: | You must be in a voice channel!`)
     }
     try {
@@ -90,6 +90,7 @@ client.on('messageCreate', async message => {
 client.on('ready', () => {
     console.log('Bot is online!')
 })
+
 
 const status = queue =>
     `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.join(', ') || 'Off'}\` | Loop: \`${
@@ -144,7 +145,7 @@ client.distube
             .setColor(config.embedColor)
 
         queue.textChannel.send({
-            embed: [finishedEmbed]
+            embeds: [finishedEmbed]
         })
     })
 

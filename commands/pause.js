@@ -15,14 +15,25 @@ module.exports = {
         let pauseEmbed = new discord.MessageEmbed()
             .setDescription('I have paused the song for you')
             .setColor(client.config.embedColor)
+        let resumeEmbed = new discord.MessageEmbed()
+            .setDescription('I have resumed the song for you')
+            .setColor(client.config.embedColor)
 
         if (!queue) return message.channel.send({
             embeds: [noQueueEmbed]
         })
 
-        queue.pause()
-        message.channel.send({
-            embeds: [pauseEmbed]
-        })
+        if(queue.paused) {
+            queue.resume()
+            return message.channel.send({
+                embeds: [resumeEmbed]
+            })
+        } else {
+            queue.pause()
+            message.channel.send({
+                embeds: [pauseEmbed]
+            })
+        }
+        
     }
 }

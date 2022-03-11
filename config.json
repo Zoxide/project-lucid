@@ -1,5 +1,6 @@
 {
     "botToken": "",
     "prefix": "",
-    "embedColor": ""
+    "embedColor": "",
+    "leaveOnStop": true
 }

@@ -19,7 +19,6 @@
     "distube": "^3.3.2",
     "ffmpeg-static": "^4.4.1",
     "fs": "^0.0.1-security",
-    "libsodium-wrappers": "^0.7.9",
-    "node-opus": "^0.3.3"
+    "libsodium-wrappers": "^0.7.9"
   }
 }
