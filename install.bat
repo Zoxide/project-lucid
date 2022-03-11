@@ -1,1 +1,1 @@
-./src/npm i 
+npm i 
