@@ -72,8 +72,8 @@ module.exports = {
             const queue = client.distube.getQueue(message)
             if (interaction.customId === 'Volume_Down') {
                 if (queue.volume == 25) {
-                    return queueMessageEmbed.setDescription(`Volume is already at 25`)
-                    message.channel.send({
+                     queueMessageEmbed.setDescription(`Volume is already at 25`)
+                    return message.channel.send({
                         embeds: [queueMessageEmbed]
                     })
                 }
