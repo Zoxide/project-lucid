@@ -15,14 +15,33 @@ module.exports = {
         let pauseEmbed = new discord.MessageEmbed()
             .setDescription('I have resumed the song for you')
             .setColor(client.config.embedColor)
+        
+        let resumeEmbed = new discord.MessageEmbed()
+            .setDescription('I have resumed the song for you')
+            .setColor(client.config.embedColor)
 
         if (!queue) return message.channel.send({
             embeds: [noQueueEmbed]
         })
+        const wrongVcEmbed = new discord.MessageEmbed()
+        .setDescription('You must be in the same voice channel as me.')
+        .setColor(client.config.embedColor)
+    
+    const { channel } = message.member.voice
+    if(!channel || message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({
+        embeds: [wrongVcEmbed]
+    })
 
+    if(queue.resume) {
+        queue.pause()
+        return message.channel.send({
+            embeds: [resumeEmbed]
+        })
+    } else {
         queue.resume()
         message.channel.send({
             embeds: [pauseEmbed]
         })
+    }
     }
 }

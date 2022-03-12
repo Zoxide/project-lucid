@@ -15,28 +15,38 @@ module.exports = {
         let noArgsEmbed = new discord.MessageEmbed()
             .setDescription('Please state A time(in seconds) to seek out!')
             .setColor(client.config.embedColor)
-        
+
         let isnanEmbed = new discord.MessageEmbed()
-        .setDescription('Please enter a number!')
-        .setColor(client.config.embedColor)
+            .setDescription('Please enter a number!')
+            .setColor(client.config.embedColor)
 
         let successEmbed = new discord.MessageEmbed()
-        .setDescription(`Seeked to ${time}`)
-        .setColor(client.config.embedColor)
+            .setDescription(`Seeked to ${time}`)
+            .setColor(client.config.embedColor)
 
         if (!queue) return message.channel.send({
             embeds: [noQueueEmbed]
         })
-        if(!args[0]) return message.channel.send({
+        const wrongVcEmbed = new discord.MessageEmbed()
+            .setDescription('You must be in the same voice channel as me.')
+            .setColor(client.config.embedColor)
+
+        const {
+            channel
+        } = message.member.voice
+        if (!channel || message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({
+            embeds: [wrongVcEmbed]
+        })
+        if (!args[0]) return message.channel.send({
             embeds: [noArgsEmbed]
         })
-        if(isNaN(time)) return message.channel.send({
+        if (isNaN(time)) return message.channel.send({
             embeds: [isnanEmbed]
         })
         queue.seek(time)
         message.channel.send({
             embeds: [successEmbed]
         })
-        
+
     }
 }

@@ -15,10 +15,22 @@ module.exports = {
         if (!queue) return message.channel.send({
             embeds: [noQueueEmbed]
         })
+        const wrongVcEmbed = new discord.MessageEmbed()
+            .setDescription('You must be in the same voice channel as me.')
+            .setColor(client.config.embedColor)
+
+        const {
+            channel
+        } = message.member.voice
+        if (!channel || message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({
+            embeds: [wrongVcEmbed]
+        })
         queue.stop()
         let successEmbed = new discord.MessageEmbed()
-        .setDescription(`Stopped!`)
-        .setColor(client.config.embedColor)
-        message.channel.send({embeds: [successEmbed]})
+            .setDescription(`Stopped!`)
+            .setColor(client.config.embedColor)
+        message.channel.send({
+            embeds: [successEmbed]
+        })
     }
 }

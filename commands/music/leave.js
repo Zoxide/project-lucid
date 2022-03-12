@@ -11,5 +11,13 @@ module.exports = {
         message.channel.send({
             embeds: [successEmbed]
         })
+        const wrongVcEmbed = new discord.MessageEmbed()
+        .setDescription('You must be in the same voice channel as me.')
+        .setColor(client.config.embedColor)
+    
+    const { channel } = message.member.voice
+    if(!channel || message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({
+        embeds: [wrongVcEmbed]
+    })
     }
 }

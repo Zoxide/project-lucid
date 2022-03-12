@@ -5,21 +5,43 @@ module.exports = {
     run: async (client, message, args) => {
         const discord = require('discord.js')
         const fs = require('fs')
+        const { MessageActionRow, MessageButton } = require('discord.js');
         if (!args[0]) {
-
-            const botCommandsList = [];
-            fs.readdirSync(`./commands/`).forEach((file) => {
-                const filen = require(`../commands/${file}`);
+         
+            const musicCommandsList = [];
+            fs.readdirSync(`${process.cwd()}/commands/music`).forEach((file) => {
+                const filen = require(`${process.cwd()}/commands/music/${file}`);
                 const name = `\`${filen.name}\``
-                botCommandsList.push(name);
+                musicCommandsList.push(name);
             });
+            // const modCommandsList = [];
+            // fs.readdirSync(`${process.cwd()}/commands/mod`).forEach((file) => {
+            //   const filen = require(`${process.cwd()}/commands/mod/${file}`);
+            //   const name = `\`${filen.name}\``
+            //   modCommandsList.push(name);
+            // });
+
+            const row = new MessageActionRow()
+            .addComponents(
+              new MessageButton()
+              .setLabel('Discord')
+              .setStyle('LINK')
+              .setURL('https://discord.gg/altmanager')
+            )
+            
+            client.on('interactionCreate', interaction => {
+              interaction.deferUpdate()
+              if (!interaction.isButton()) return;
+          });
 
             const helpEmbed = new discord.MessageEmbed()
                 .setTitle(`${client.user.username} Help`)
-                .addField("🤖 - Bot Commands", botCommandsList.map((data) => `${data}`).join(", "), true)
+                .addField("🎵  - Music Commands", musicCommandsList.map((data) => `${data}`).join(", "), true)
+                // .addField("🤖 - Moderator Commands", modCommandsList.map((data) => `${data}`).join(', '), true)
                 .setColor(client.config.embedColor)
             message.channel.send({
-                embeds: [helpEmbed]
+                embeds: [helpEmbed],
+                components: [row]
             })
         } else {
             const command = client.commands.get(args[0].toLowerCase()) || client.commands.find((c) => c.aliases && c.aliases.includes(args[0].toLowerCase()));

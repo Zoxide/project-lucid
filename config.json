@@ -2,5 +2,7 @@
     "botToken": "",
     "prefix": "",
     "embedColor": "",
-    "leaveOnStop": true
+    "leaveOnStop": false,
+    "leaveOnEmpty": true,
+    "leaveOnFinish": true
 }
