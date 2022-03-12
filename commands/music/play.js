@@ -19,7 +19,7 @@ module.exports = {
         .setColor(client.config.embedColor)
     
     const { channel } = message.member.voice
-    if(!message.guild.me.voice.channel) {
+    
         if (!string) return message.channel.send(`:x: | Please enter a song url or query to search.`)
         client.distube.play(message.member.voice.channel, string, {
             member: message.member,
@@ -27,10 +27,6 @@ module.exports = {
             message
         })
 
-    } else {
-    if(!channel || message.member.voice.channel !== message.guild.me.voice.channel) return message.channel.send({
-        embeds: [wrongVcEmbed]
-    })
-    }   
+
+    }  
  }
-}
