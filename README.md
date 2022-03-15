@@ -1,5 +1,5 @@
 
-# This is a very simple open sourced discordjs music bot
+# Project Lucid
 
 1) run the install.bat
 
