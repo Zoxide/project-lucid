@@ -32,7 +32,13 @@ module.exports = {
             embeds: [wrongVcEmbed]
         })
         try {
-            const song = await queue.skip()
+            if(!queue.autoplay && queue.songs.length <= 1 ) {
+                return message.channel.send({
+                    embeds: [noSongEmbed]
+                })
+            } else {
+                const song = await queue.skip()
+            }
         } catch (e) {
             message.channel.send({
                 embeds: [noSongEmbed]

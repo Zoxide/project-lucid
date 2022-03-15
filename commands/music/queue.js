@@ -17,75 +17,75 @@ module.exports = {
         let resumeEmbed = new discord.MessageEmbed()
             .setDescription('I have resumed the song for you')
             .setColor(client.config.embedColor)
-
+        let noSongEmbed = new discord.MessageEmbed()
+            .setTitle(':x: Whoa')
+            .setDescription('There isnt another song in the queue')
+            .setColor(client.config.embedColor)
             const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                .setCustomId('Volume_Down')
-                .setEmoji('🔈')
-                .setLabel('Volume Down')
+                .setCustomId('previous')
+                .setEmoji('◀️')
+                .setLabel('Previous')
                 .setStyle('PRIMARY')
             )
-            .addComponents(
-                new MessageButton()
-                .setCustomId('Volume_Up')
-                .setEmoji('🔊')
-                .setLabel('Volume Up')
-                .setStyle('PRIMARY')
-            )
-            .addComponents(
-                new MessageButton()
-                .setCustomId('Pause')
-                .setEmoji('⏸️')
-                .setLabel('Pause')
-                .setStyle('PRIMARY')
-            )
-            .addComponents(
-                new MessageButton()
-                .setCustomId('Play')
-                .setEmoji('⏯️')
-                .setLabel('Play')
-                .setStyle('PRIMARY')
-            )
-
+                .addComponents(
+                    new MessageButton()
+                    .setCustomId('Pause')
+                    .setEmoji('⏸️')
+                    .setLabel('Pause')
+                    .setStyle('PRIMARY')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setCustomId('Play')
+                    .setStyle('PRIMARY')
+                    .setEmoji('⏯️')
+                    .setLabel('Resume')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setCustomId('skip')
+                    .setEmoji('⏩')
+                    .setLabel('Skip')
+                    .setStyle('PRIMARY')
+                )
+    
             const queueMessageEmbed = new discord.MessageEmbed()
-            .setTitle('Queue Update')
-            .setDescription(`The queue has been paused`)
-            .setColor(client.config.embedColor)
-        
-            client.on('interactionCreate', interaction => {
+                .setTitle('Queue Update')
+                .setDescription(`The queue has been paused`)
+                .setColor(client.config.embedColor)
+    
+            client.on('interactionCreate', async(interaction) => {
                 interaction.deferUpdate()
                 if (!interaction.isButton()) return;
-            
-            
+    
+    
                 const queue = client.distube.getQueue(message)
-                if(interaction.customId === 'Volume_Down') {
-                    if(queue.volume == 25) {
-                        return queueMessageEmbed.setDescription(`Volume is already at 25`)
-                        message.channel.send({
-                            embeds: [queueMessageEmbed]
-                        })
-                    }
-                    queue.setVolume(25)
-                    queueMessageEmbed.setDescription(`Volume was set to 25`)
-                    message.channel.send({
-                        embeds: [queueMessageEmbed]
-                    })
-                } else if(interaction.customId === 'Volume_Up') {
-                    if(queue.volume == 75) {
-                        queueMessageEmbed.setDescription(`Volume is already at 75`)
+                if (interaction.customId === 'skip') {
+                    if(!queue.autoplay && queue.songs.length <= 1 ) {
+                        noSongEmbed.setDescription('There isnt a song up next and autoplay isnt on.')
                         return message.channel.send({
-                            embeds: [queueMessageEmbed]
+                            embeds: [noSongEmbed]
                         })
+                    } else {
+                        await queue.skip()
                     }
-                    queue.setVolume(75)
-                    queueMessageEmbed.setDescription(`Set the volume to 75`)
-                    message.channel.send({
-                        embeds: [queueMessageEmbed]
-                    })
-                } else if(interaction.customId === 'Pause') {
                     
-                    if(queue.paused) {
+    
+                } else if (interaction.customId === 'previous') {
+                    if(queue.previousSongs.length < 1) {    
+                        noSongEmbed.setDescription('There isnt a previous song')
+                        return message.channel.send({
+                            embeds: [noSongEmbed]
+                        })
+                    } else {
+                       queue.previous();
+                    }
+              
+                } else if (interaction.customId === 'Pause') {
+    
+                    if (queue.paused) {
                         queue.resume()
                         return message.channel.send({
                             embeds: [resumeEmbed]
@@ -96,8 +96,8 @@ module.exports = {
                             embeds: [pauseEmbed]
                         })
                     }
-                } else if(interaction.customId === 'Play') {
-                    if(queue.paused) {
+                } else if (interaction.customId === 'Play') {
+                    if (queue.paused) {
                         queue.resume()
                         return message.channel.send({
                             embeds: [resumeEmbed]

@@ -14,20 +14,20 @@ module.exports = {
                 const name = `\`${filen.name}\``
                 musicCommandsList.push(name);
             });
-            // const modCommandsList = [];
-            // fs.readdirSync(`${process.cwd()}/commands/mod`).forEach((file) => {
-            //   const filen = require(`${process.cwd()}/commands/mod/${file}`);
-            //   const name = `\`${filen.name}\``
-            //   modCommandsList.push(name);
-            // });
+            const utilCommandList = [];
+            fs.readdirSync(`${process.cwd()}/commands/utils`).forEach((file) => {
+              const filen = require(`${process.cwd()}/commands/utils/${file}`);
+              const name = `\`${filen.name}\``
+              utilCommandList.push(name);
+            });
 
-            const row = new MessageActionRow()
-            .addComponents(
-              new MessageButton()
-              .setLabel('Discord')
-              .setStyle('LINK')
-              .setURL('https://discord.gg/altmanager')
-            )
+            const linkRow = new MessageActionRow()
+              .addComponents(
+                new MessageButton()
+                  .setURL('https://discord.gg/altmanager')
+                  .setLabel('Support Server')
+                  .setStyle('LINK')
+              )
             
             client.on('interactionCreate', interaction => {
               interaction.deferUpdate()
@@ -37,11 +37,11 @@ module.exports = {
             const helpEmbed = new discord.MessageEmbed()
                 .setTitle(`${client.user.username} Help`)
                 .addField("🎵  - Music Commands", musicCommandsList.map((data) => `${data}`).join(", "), true)
-                // .addField("🤖 - Moderator Commands", modCommandsList.map((data) => `${data}`).join(', '), true)
+                .addField("🛠️ - Util Commands", utilCommandList.map((data) => `${data}`).join(', '), true)
                 .setColor(client.config.embedColor)
             message.channel.send({
                 embeds: [helpEmbed],
-                components: [row]
+                components: [linkRow]
             })
         } else {
             const command = client.commands.get(args[0].toLowerCase()) || client.commands.find((c) => c.aliases && c.aliases.includes(args[0].toLowerCase()));

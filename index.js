@@ -24,13 +24,11 @@ if (!config.prefix) {
     console.log('Please specify a prefix.')
     process.exit(0)
 }
-var colors = require('colors');
 if (!config.embedColor) config.embedColor = '#0000FF'
-
-
 client.commands = new Discord.Collection()
 client.events = new Discord.Collection()
 client.config = require('./config.json')
+client.colors = require('colors')
 client.distube = new DisTube(client, {
     leaveOnStop: config.leaveOnStop,
     emitNewSongOnly: true,
@@ -48,7 +46,7 @@ client.distube = new DisTube(client, {
     youtubeDL: false
 })
 
-
+//handlers
 const commandFolders = fs.readdirSync("./commands");
 for (const folder of commandFolders) {
     const commandFiles = fs
@@ -60,7 +58,7 @@ for (const folder of commandFolders) {
 
         if (command.name) {
             client.commands.set(command.name, command);
-            console.log(`Prefix Command ${file} is being loaded `.green)
+            console.log(`Prefix Command ${file} is being loaded `.yellow)
         } else {
             console.log(`Prefix Command ${file} missing a help.name or help.name is not in string `.red)
             continue;
@@ -71,33 +69,29 @@ for (const folder of commandFolders) {
     }
 }
 
-
-client.on('messageCreate', async message => {
-    if (message.author.bot || !message.guild) return
-    const prefix = config.prefix
-    if (!message.content.startsWith(prefix)) return
-    console.log(`${message.author.tag} ran the command ${message.content}.`.green.bold)
-    const args = message.content.slice(prefix.length).trim().split(/ +/g)
-    const command = args.shift().toLowerCase()
-    const cmd = client.commands.get(command)
-    if (!cmd) return
-    if (cmd.inVoiceChannel && !message.member.voice.channel && client.member.voice.channel !== message.member.voice.channel) {
-        return message.channel.send(`:x: | You must be in a voice channel!`)
+const eventFolders = fs.readdirSync(`${process.cwd()}/events`);
+for (const folder of eventFolders) {
+    const eventFiles = fs
+    .readdirSync(`${process.cwd()}/events/${folder}`)
+    .filter((file) => file.endsWith(".js"));
+    
+    for (const file of eventFiles) {
+        const event = require(`${process.cwd()}/events/${folder}/${file}`);
+        
+        if (event.name) {
+            console.log(`Event ${file} is being loaded `.cyan)
+        } else {
+            console.log(`Event ${file} missing a help.name or help.name is not in string `.red);
+            continue;
+        }
+        
+        if (event.once) {
+            client.once(event.name, (...args) => event.execute(...args, client));
+        } else {
+            client.on(event.name, (...args) => event.execute(...args, client));
+        }
     }
-    try {
-        cmd.run(client, message, args)
-    } catch (e) {
-        console.error(e)
-        message.channel.send(`:x: | Error: \`${e}\``)
-    }
-
-})
-
-client.on('ready', async () => {
-    console.log('Bot is online!\nSupport Server: discord.gg/altmanager'.underline.red)
-})
-
-
+}
 
 
 const status = queue =>
@@ -112,9 +106,9 @@ client.distube
             .addField('Duration', song.formattedDuration)
             .addField('Queued By', `${song.user}\n${status(queue)}`)
             .setColor(config.embedColor)
-        queue.textChannel.send({
-            embeds: [playSongEmbed]
-        })
+            queue.textChannel.send({
+                embeds: [playSongEmbed]
+            })
 
     })
     .on('addSong', (queue, song) => {
@@ -143,7 +137,9 @@ client.distube
         channel.send(`:x: | An error encountered: ${e.toString().slice(0, 1974)}`)
         console.error(e)
     })
-    .on('empty', (channel) => channel.send('Voice channel is empty! Leaving the channel...'))
+    .on('empty', (queue) => {
+        queue.textChannel.send('VC Empty, leaving...')
+    })
     .on('searchNoResult', (message, query) =>
         message.channel.send(`:x: | No result found for \`${query}\`!`)
     )
@@ -157,5 +153,5 @@ client.distube
         })
 
     })
-
-client.login(config.botToken)
+ 
+    client.login(config.botToken)
