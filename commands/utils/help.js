@@ -21,18 +21,7 @@ module.exports = {
               utilCommandList.push(name);
             });
 
-            const linkRow = new MessageActionRow()
-              .addComponents(
-                new MessageButton()
-                  .setURL('https://discord.gg/altmanager')
-                  .setLabel('Support Server')
-                  .setStyle('LINK')
-              )
-            
-            client.on('interactionCreate', interaction => {
-              interaction.deferUpdate()
-              if (!interaction.isButton()) return;
-          });
+        
 
             const helpEmbed = new discord.MessageEmbed()
                 .setTitle(`${client.user.username} Help`)
@@ -40,8 +29,7 @@ module.exports = {
                 .addField("🛠️ - Util Commands", utilCommandList.map((data) => `${data}`).join(', '), true)
                 .setColor(client.config.embedColor)
             message.channel.send({
-                embeds: [helpEmbed],
-                components: [linkRow]
+                embeds: [helpEmbed]
             })
         } else {
             const command = client.commands.get(args[0].toLowerCase()) || client.commands.find((c) => c.aliases && c.aliases.includes(args[0].toLowerCase()));

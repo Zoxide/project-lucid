@@ -44,17 +44,10 @@ module.exports = {
         )
             .addComponents(
                 new MessageButton()
-                .setCustomId('Pause')
-                .setEmoji('⏸️')
-                .setLabel('Pause')
-                .setStyle('PRIMARY')
-            )
-            .addComponents(
-                new MessageButton()
-                .setCustomId('Play')
+                .setCustomId('Play/Pause')
                 .setStyle('PRIMARY')
                 .setEmoji('⏯️')
-                .setLabel('Resume')
+                .setLabel('Play/Pause')
             )
             .addComponents(
                 new MessageButton()
@@ -73,8 +66,6 @@ module.exports = {
             interaction.deferUpdate()
             if (!interaction.isButton()) return;
 
-
-            const queue = client.distube.getQueue(message)
             if (interaction.customId === 'skip') {
                 if(!queue.autoplay && queue.songs.length <= 1 ) {
                     noSongEmbed.setDescription('There isnt a song up next and autoplay isnt on.')
@@ -96,20 +87,8 @@ module.exports = {
                    queue.previous();
                 }
           
-            } else if (interaction.customId === 'Pause') {
+            } else if (interaction.customId === 'Play/Pause') {
 
-                if (queue.paused) {
-                    queue.resume()
-                    return message.channel.send({
-                        embeds: [resumeEmbed]
-                    })
-                } else {
-                    queue.pause()
-                    message.channel.send({
-                        embeds: [pauseEmbed]
-                    })
-                }
-            } else if (interaction.customId === 'Play') {
                 if (queue.paused) {
                     queue.resume()
                     return message.channel.send({

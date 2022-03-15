@@ -22,7 +22,7 @@ module.exports = {
         .setThumbnail(client.user.avatarURL())
         .setDescription(`**Project Lucid**\n\n**This project is maintained by Xenon Development Corp.**\n
         This project was meant to help users learn the basics of discord bot development whilst providing a functional music bot for your enjoyment.\n
-        With this bot being in the beginning stages, you may experience an issue. If thats the case, please content me in the support server`)
+        With this bot being in the beginning stages, you may experience an issue. If thats the case, please content me in the support server\n\n**Stats**\nServers:\n${client.guilds.cache.size}\nChannels:\n${client.channels.cache.size}`)
         .setColor(client.config.embedColor)
         message.channel.send({
             embeds: [infoEmbed],
