@@ -5,9 +5,7 @@ module.exports = {
     run: async (client, message, args) => {
         const discord = require('discord.js')
         const fs = require('fs')
-        const { MessageActionRow, MessageButton } = require('discord.js');
         if (!args[0]) {
-         
             const musicCommandsList = [];
             fs.readdirSync(`${process.cwd()}/commands/music`).forEach((file) => {
                 const filen = require(`${process.cwd()}/commands/music/${file}`);
@@ -21,8 +19,6 @@ module.exports = {
               utilCommandList.push(name);
             });
 
-        
-
             const helpEmbed = new discord.MessageEmbed()
                 .setTitle(`${client.user.username} Help`)
                 .addField("🎵  - Music Commands", musicCommandsList.map((data) => `${data}`).join(", "), true)
@@ -31,6 +27,7 @@ module.exports = {
             message.channel.send({
                 embeds: [helpEmbed]
             })
+
         } else {
             const command = client.commands.get(args[0].toLowerCase()) || client.commands.find((c) => c.aliases && c.aliases.includes(args[0].toLowerCase()));
             if (!command) {
@@ -48,8 +45,6 @@ module.exports = {
                   .addField('Description', description)
                   .addField('Usage', usage)
                   .setColor(client.config.embedColor)
-                
-            
                 message.reply({embeds: [helpCmdEmbed], allowedMentions: {repliedUser: false}});
               }
 

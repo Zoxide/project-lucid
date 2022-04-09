@@ -1,11 +1,10 @@
 module.exports = {
     name: "messageCreate",
     async execute(message, client) {
-        if (message.author.bot || !message.guild) return
+    if (message.author.bot || !message.guild) return
     const prefix = client.config.prefix
     if (!message.content.startsWith(prefix)) return
-    console.log(`${message.author.tag} ran the command ${message.content}`.grey)
-
+    console.log(`${message.author.tag} ran the command ${message.content} in: ${message.guild.name}`.grey)
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const command = args.shift().toLowerCase()
     const cmd = client.commands.get(command)

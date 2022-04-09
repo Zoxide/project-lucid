@@ -30,6 +30,12 @@ module.exports = {
         if (!queue) return message.channel.send({
             embeds: [noQueueEmbed]
         })
+        // const { channel } = message.member.voice
+        // if(!channel || message.member.voice.channel !== message.guild.me.voice.channel) {
+        //     return message.channel.send({
+        //         embeds: [embed]
+        //     })
+        // }
         const NP = `${queue.songs[0].playing ? '⏸️ |' : '🔴 |'}`;
         const part = Math.floor((queue.currentTime / queue.songs[0].duration) * 30);
 
@@ -57,15 +63,15 @@ module.exports = {
                 .setStyle('PRIMARY')
             )
 
-        const queueMessageEmbed = new discord.MessageEmbed()
-            .setTitle('Queue Update')
-            .setDescription(`The queue has been paused`)
+        const noVCEmbed = new discord.MessageEmbed()
+            .setTitle(':x: Whoa.')
+            .setDescription(`You must be in the vc.`)
             .setColor(client.config.embedColor)
 
-        client.on('interactionCreate', async(interaction) => {
+        client.on('interactionCreate', async(interaction, click) => {
             interaction.deferUpdate()
             if (!interaction.isButton()) return;
-
+            //click.user.id
             if (interaction.customId === 'skip') {
                 if(!queue.autoplay && queue.songs.length <= 1 ) {
                     noSongEmbed.setDescription('There isnt a song up next and autoplay isnt on.')

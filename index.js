@@ -11,6 +11,7 @@ const client = new Discord.Client({
     ]
 })
 const config = require('./config.json')
+const handler = require('./handler/main')
 const {
     SpotifyPlugin
 } = require('@distube/spotify')
@@ -20,6 +21,8 @@ const {
 const {
     YtDlpPlugin
 } = require('@distube/yt-dlp')
+var 
+JavaScriptObfuscator = require('javascript-obfuscator');
 if (!config.prefix) {
     console.log('Please specify a prefix.')
     process.exit(0)
@@ -29,6 +32,8 @@ client.commands = new Discord.Collection()
 client.events = new Discord.Collection()
 client.config = require('./config.json')
 client.colors = require('colors')
+handler.commandLoader(client)
+handler.eventLoader(client)
 client.distube = new DisTube(client, {
     leaveOnStop: config.leaveOnStop,
     emitNewSongOnly: true,
@@ -45,54 +50,6 @@ client.distube = new DisTube(client, {
     ],
     youtubeDL: false
 })
-
-//handlers
-const commandFolders = fs.readdirSync("./commands");
-for (const folder of commandFolders) {
-    const commandFiles = fs
-        .readdirSync(`./commands/${folder}`)
-        .filter((file) => file.endsWith(".js"));
-
-    for (const file of commandFiles) {
-        const command = require(`./commands/${folder}/${file}`);
-
-        if (command.name) {
-            client.commands.set(command.name, command);
-            console.log(`Prefix Command ${file} is being loaded `.yellow)
-        } else {
-            console.log(`Prefix Command ${file} missing a help.name or help.name is not in string `.red)
-            continue;
-        }
-
-        if (command.aliases && Array.isArray(command))
-            command.aliases.forEach((alias) => client.aliases.set(alias, command.name));
-    }
-}
-
-const eventFolders = fs.readdirSync(`${process.cwd()}/events`);
-for (const folder of eventFolders) {
-    const eventFiles = fs
-    .readdirSync(`${process.cwd()}/events/${folder}`)
-    .filter((file) => file.endsWith(".js"));
-    
-    for (const file of eventFiles) {
-        const event = require(`${process.cwd()}/events/${folder}/${file}`);
-        
-        if (event.name) {
-            console.log(`Event ${file} is being loaded `.cyan)
-        } else {
-            console.log(`Event ${file} missing a help.name or help.name is not in string `.red);
-            continue;
-        }
-        
-        if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args, client));
-        } else {
-            client.on(event.name, (...args) => event.execute(...args, client));
-        }
-    }
-}
-
 
 const status = queue =>
     `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.join(', ') || 'Off'}\` | Loop: \`${

@@ -18,11 +18,11 @@ module.exports = {
               if (!interaction.isButton()) return;
           });
         const infoEmbed = new discord.MessageEmbed()
-        .setImage('https://cdn.discordapp.com/avatars/803410753079869491/6cbc06dd2abeda2cc444e292a211f821.webp?size=1024')
+        .setImage('https://cdn.discordapp.com/attachments/959951576183762994/962179090524291092/black-logo.png')
         .setThumbnail(client.user.avatarURL())
-        .setDescription(`**Project Lucid**\n\n**This project is maintained by Xenon Development Corp.**\n
+        .setDescription(`**Project Lucid**\n\n**This project is maintained by Lucid Development.**\n
         This project was meant to help users learn the basics of discord bot development whilst providing a functional music bot for your enjoyment.\n
-        With this bot being in the beginning stages, you may experience an issue. If thats the case, please content me in the support server\n\n**Stats**\nServers:\n${client.guilds.cache.size}\nChannels:\n${client.channels.cache.size}`)
+        With this bot being in the beginning stages, you may experience an issue. If thats the case, please contact me in the support server: V8.#6760\n\n**Stats**\nServers:\n${client.guilds.cache.size}`)
         .setColor(client.config.embedColor)
         message.channel.send({
             embeds: [infoEmbed],

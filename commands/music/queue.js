@@ -122,9 +122,7 @@ module.exports = {
             .setTitle('Current Queue')
             .setDescription(q.map((song, i) => `${i === 0 ? 'Currently Playing:\n' : `${i}.`} ${song.name} - \`${song.formattedDuration}\``).join('\n'))
             .setColor(client.config.embedColor)
-
-
-
+            
         message.channel.send({
             embeds: [queueEmbed],
             components: [row]

@@ -1,7 +1,7 @@
 {
     "botToken": "",
-    "prefix": "",
-    "embedColor": "",
+    "prefix": "!",
+    "embedColor": "#0000FF",
     "leaveOnStop": false,
     "leaveOnEmpty": true,
     "leaveOnFinish": true
