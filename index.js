@@ -21,8 +21,6 @@ const {
 const {
     YtDlpPlugin
 } = require('@distube/yt-dlp')
-var 
-JavaScriptObfuscator = require('javascript-obfuscator');
 if (!config.prefix) {
     console.log('Please specify a prefix.')
     process.exit(0)
