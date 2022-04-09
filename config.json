@@ -4,5 +4,12 @@
     "embedColor": "#0000FF",
     "leaveOnStop": false,
     "leaveOnEmpty": true,
-    "leaveOnFinish": true
+    "leaveOnFinish": true,
+
+    "database": {
+        "host": "localhost",
+        "username": "root",
+        "password": "",
+        "database": "music"
+    }
 }
