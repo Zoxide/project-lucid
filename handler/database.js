@@ -9,5 +9,4 @@ connection.connect(function (error) {
     console.log(`\x1b[35mLOADER \x1b[37m» \x1b[35mSuccessfully connected to the database`);
 });
 
-
 module.exports = connection;
