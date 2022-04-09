@@ -20,7 +20,7 @@ module.exports = {
             })
             const inviteEmbed = new discord.MessageEmbed()
             .setTitle('Invite Me!')
-            .setDescription('<:lucid:952873201732567050> Want me to take part in your everlasting server? Well press the button down below to get started!')
+            .setDescription('Want me to take part in your everlasting server? Well press the button down below to get started!')
             .setColor(client.config.embedColor)
             message.channel.send({
                 embeds: [inviteEmbed],

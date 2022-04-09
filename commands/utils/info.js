@@ -8,7 +8,7 @@ module.exports = {
         const linkRow = new MessageActionRow()
         .addComponents(
           new MessageButton()
-            .setURL('https://discord.gg/altmanager')
+            .setURL('https://discord.gg/luciddev')
             .setLabel('Support Server')
             .setStyle('LINK')
         )
